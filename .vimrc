@@ -4,8 +4,12 @@ set cursorline
 set number
 set bg=dark
 set textwidth=120
-hi statusline guibg=blue ctermfg=8 guifg=DarkGrey ctermbg=15
+set laststatus=2
+"hi statusline guibg=blue ctermfg=8 guifg=DarkGrey ctermbg=15
+"set statusline=\ %F%m%r%y[%{strlen(&fenc)?&fenc:&enc}]%h%w%=[%l,%3v]\ --%p%%--\ \  
+"hi  statusline ctermfg=DarkGrey ctermbg=blue
 "set foldmethod=indent
+" allow multiple indentation/deindentation in visual mode
 vnoremap < <gv
 vnoremap > >gv
 
@@ -59,3 +63,39 @@ set si
 "hi CursorLine term=none cterm=none ctermbg=none ctermbg=none                    
 "au InsertEnter * hi CursorLine term=none cterm=underline                        
 "au InsertLeave * hi CursorLine term=none cterm=none ctermbg=none       
+
+"status linec
+set laststatus=2
+set statusline=\ %{HasPaste()}%<%-15.25(%f%)%m%r%h\ %w\ \ 
+set statusline+=\ \ \ [%{&ff}/%Y] 
+set statusline+=\ \ \ %<%20.30(%{hostname()}:%{CurDir()}%)\ 
+set statusline+=%=%-10.(%l,%c%V%)\ %p%%/%L
+
+function! CurDir()
+    let curdir = substitute(getcwd(), $HOME, "~", "")
+    return curdir
+endfunction
+
+function! HasPaste()
+    if &paste
+        return '[PASTE]'
+    else
+        return ''
+    endif
+endfunction
+
+set matchpairs+=<:>
+
+" for C/C++ files
+" F9 to compile, F8 to run, F5 to build
+au FileType c map <F9> :!gcc -std=c99 -finline-functions -Wall -Wextra -pedantic -O2 -lm -o -lpthread %:r<CR>
+au FileType cpp map <F9> :!g++ -std=c++11 -finline-functions -Wall -Wextra -pedantic -O2 % -lm -o %:r<CR>
+au FileType c,cpp map <F8> :!./%:r<CR>
+au FileType c,cpp map <F5> :w<CR> :make<CR>
+
+" move around tabs. conflict with the original screen top/bottom
+" comment them out if you want the original H/L
+" go to prev tab 
+map <S-H> gT
+" go to next tab
+map <S-L> gt
