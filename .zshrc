@@ -134,3 +134,17 @@ fi
 alias tel='luit -encoding big5 telnet'
 alias l='ls -F'
 alias ll='ls -lhF'
+
+
+HISTSIZE=10000
+SAVEHIST=1000
+setopt no_list_beep
+setopt no_beep
+setopt appendhistory
+setopt hist_ignore_all_dups
+setopt hist_reduce_blanks
+setopt autocd
+setopt prompt_subst
+setopt autopushd
+
+unsetopt correctall
