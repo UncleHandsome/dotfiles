@@ -1,37 +1,60 @@
-" turn plugin in on
-filetype plugin on
-
-"default settings
-set enc=utf-8
-set fenc=utf-8
-set termencoding=utf-8
-set tabstop=4
 set nocompatible
-set shiftwidth=4
-set cursorcolumn
-
-"indention
-set smartindent
-"set cindent
-"set autoindent
-
 set nocp
-"set spell
 set cursorline
 set number
-set showmatch
-set noeb vb t_vb=
-set hlsearch
-set autoindent
 set bg=dark
-set showcmd
-set smartcase
 set textwidth=120
+hi statusline guibg=blue ctermfg=8 guifg=DarkGrey ctermbg=15
 "set foldmethod=indent
-syn on
 vnoremap < <gv
 vnoremap > >gv
-set makeprg=g++\ -Wall\ -o\ %:r\ % 
+
+"General
+filetype plugin on
+filetype indent on
+set autoread
+
+"user interface
+set so=7
+set wildmenu
+set hlsearch
+set smartcase
+set ruler
+set cmdheight=2
+set hid
+set whichwrap+=<,>,h,l
+set magic
+set noerrorbells
+set novisualbell
+set incsearch
+set ignorecase
+set showmatch
+set mat=2
+set lazyredraw
+set smartcase
+set noeb vb t_vb=
+set tm=500
+
+"coloer and fonts
+syn on
+set encoding=utf8
+set ffs=unix,dos,mac
+
+"files
+set nobackup
+set nowb
+set noswapfile
+
+"text, tab and indent
+set expandtab
+set smarttab
+set sw=4
+set ts=4
+set lbr
+set tw=500
+set ai
+set si
+"set wrap
 
 "hi CursorLine term=none cterm=none ctermbg=none ctermbg=none                    
 "au InsertEnter * hi CursorLine term=none cterm=underline                        
