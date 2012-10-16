@@ -1,0 +1,5 @@
+draw_borders=True
+display_size_in_status_bar=True
+display_size_in_main_column=True
+mouse_enabled=False
+show_cursor=True
