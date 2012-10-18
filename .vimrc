@@ -1,13 +1,7 @@
-set nocompatible
-set nocp
-set cursorline
-set number
+set cul
+set nu
 set bg=dark
-set textwidth=120
-set laststatus=2
-"hi statusline guibg=blue ctermfg=8 guifg=DarkGrey ctermbg=15
-"set statusline=\ %F%m%r%y[%{strlen(&fenc)?&fenc:&enc}]%h%w%=[%l,%3v]\ --%p%%--\ \  
-"hi  statusline ctermfg=DarkGrey ctermbg=blue
+set tw=120
 "set foldmethod=indent
 " allow multiple indentation/deindentation in visual mode
 vnoremap < <gv
@@ -16,26 +10,25 @@ vnoremap > >gv
 "General
 filetype plugin on
 filetype indent on
-set autoread
+set ar
 
 "user interface
 set so=7
-set wildmenu
-set hlsearch
-set smartcase
-set ruler
-set cmdheight=2
+set hls
+set wmnu
+set ru
+set ch=2
 set hid
-set whichwrap+=<,>,h,l
+set ww+=<,>,h,l
 set magic
-set noerrorbells
-set novisualbell
-set incsearch
-set ignorecase
-set showmatch
+set noeb
+set novb
+set is
+set ic
+set sm
 set mat=2
-set lazyredraw
-set smartcase
+set lz
+set scs
 set noeb vb t_vb=
 set tm=500
 
@@ -45,13 +38,13 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 "files
-set nobackup
+set nobk
 set nowb
-set noswapfile
+set noswf
 
 "text, tab and indent
-set expandtab
-set smarttab
+set et
+set sta
 set sw=4
 set ts=4
 set lbr
@@ -60,12 +53,9 @@ set ai
 set si
 "set wrap
 
-"hi CursorLine term=none cterm=none ctermbg=none ctermbg=none                    
-"au InsertEnter * hi CursorLine term=none cterm=underline                        
-"au InsertLeave * hi CursorLine term=none cterm=none ctermbg=none       
 
-"status linec
-set laststatus=2
+"line status
+set ls=2
 set statusline=\ %{HasPaste()}%<%-15.25(%f%)%m%r%h\ %w\ \ 
 set statusline+=\ \ \ [%{&ff}/%Y] 
 set statusline+=\ \ \ %<%20.30(%{hostname()}:%{CurDir()}%)\ 
@@ -88,8 +78,8 @@ set matchpairs+=<:>
 
 " for C/C++ files
 " F9 to compile, F8 to run, F5 to build
-au FileType c map <F9> :!gcc -std=c99 -finline-functions -Wall -Wextra -pedantic -O2 -lm -o -lpthread %:r<CR>
-au FileType cpp map <F9> :!g++ -std=c++11 -finline-functions -Wall -Wextra -pedantic -O2 % -lm -o %:r<CR>
+au FileType c map <F9> :!gcc -finline-functions -Wall -Wextra -pedantic -O2 -lm -lpthread -o %:r<CR>
+au FileType cpp map <F9> :!g++ -std=c++11 -finline-functions -Wall -Wextra -pedantic -O2 -lm -lpthread -o %:r<CR>
 au FileType c,cpp map <F8> :!./%:r<CR>
 au FileType c,cpp map <F5> :w<CR> :make<CR>
 
@@ -99,3 +89,6 @@ au FileType c,cpp map <F5> :w<CR> :make<CR>
 map <S-H> gT
 " go to next tab
 map <S-L> gt
+
+map <M-h> <C-T>
+map <M-l> <C-]>
