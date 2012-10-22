@@ -1,3 +1,4 @@
+runtime! debian.vim
 set cul
 set nu
 set bg=dark
@@ -6,6 +7,8 @@ set tw=120
 " allow multiple indentation/deindentation in visual mode
 vnoremap < <gv
 vnoremap > >gv
+vmap <tab> >gv
+vmap <s-tab> <gv
 
 "General
 filetype plugin on
@@ -19,7 +22,6 @@ set wmnu
 set ru
 set ch=2
 set hid
-set ww+=<,>,h,l
 set magic
 set noeb
 set novb
@@ -74,7 +76,8 @@ function! HasPaste()
     endif
 endfunction
 
-set matchpairs+=<:>
+map j gj
+map k gk
 
 " for C/C++ files
 " F9 to compile, F8 to run, F5 to build
@@ -90,5 +93,21 @@ map <S-H> gT
 " go to next tab
 map <S-L> gt
 
-map <M-h> <C-T>
-map <M-l> <C-]>
+
+
+if has("cscope")
+    set cscopetag
+    set csto=0
+    if filereadable("cscope.out")
+        cs add cscope.out  
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set cscopeverbose  
+endif
+
+
+autocmd Filetype c :set equalprg=indent
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
+endif

@@ -18,7 +18,6 @@ function precmd {
     fi
 }
 
-
 #setopt extended_glob
 #preexec () {
 #    if [[ "$TERM" == "screen" ]]; then
@@ -59,11 +58,10 @@ setprompt () {
     PR_SHIFT_IN="%{$terminfo[smacs]%}"
     PR_SHIFT_OUT="%{$terminfo[rmacs]%}"
     #PR_HBAR=${altchar[q]:--}
-    PR_HBAR=${altchar[q]:--}
-    PR_ULCORNER=${altchar[l]:--}
-    PR_LLCORNER=${altchar[m]:--}
-    PR_LRCORNER=${altchar[j]:--}
-    PR_URCORNER=${altchar[k]:--}
+    #PR_ULCORNER=${altchar[l]:-┌}
+    #PR_LLCORNER=${altchar[m]:--}
+    #PR_LRCORNER=${altchar[j]:--}
+    #PR_URCORNER=${altchar[k]:--}
 
     
     ###
@@ -134,8 +132,9 @@ alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
 alias tel='luit -encoding big5 telnet'
+alias big5='luit -encoding big5'
 alias bs2='luit -encoding big5 telnet bs2.to'
-alias ptt='luit -encoding big5 telnet ptt.cc'
+alias ptt='luit -encoding big5 telnet ptt.cc -a -l UncleHs'
 alias l='ls -FC'
 alias ll='ls -lhF'
 alias git-log='git log --oneline --decorate --graph'
@@ -144,6 +143,7 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias untar='tar zxvf'
+alias atm='tmux attach'
 
 setopt autocd # Automatically cd when a path is given
 unsetopt beep    # No beeps please!
