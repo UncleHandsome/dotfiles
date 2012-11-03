@@ -1,0 +1,22 @@
+urxvt.background:       #000000
+urxvt.foreground:       #EBEBFF
+urxvt*scrollBar:        false
+urxvt*secondaryScroll:  true
+urxvt*font:             xft:inconsolata:pixelsize=15
+urxvt*saveLines:        512
+urxvt*xftAntialias:     true
+urxvt*jumpScroll:       true
+urxvt*internalBorder:   0
+urxvt*cursolBlink:      false
+urxvt*termName:         rxvt-256color
+!urxvt*transparent:      true
+urxvt*inheritPixmap: true
+urxvt*tintCddolor: white
+urxvt*shading:          9 
+URxvt.perl-ext-common:  default,clapboard,url-select,keyboard-select,tabbed
+URxvt.url-select.launcher: chromium -new-tab
+URxvt.url-select.underline: true
+URxvt.keysym.M-u:       perl:url-select:select_next
+URxvt.keysym.M-Escape:  perl:keyboard-select:activate
+URxvt.keysym.M-s:       perl:keyboard-select:search
+URxvt.multichar_encoding:big5
