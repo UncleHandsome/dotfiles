@@ -1,4 +1,3 @@
-runtime! debian.vim
 set cul
 set nu
 set bg=dark
@@ -81,8 +80,8 @@ map k gk
 
 " for C/C++ files
 " F9 to compile, F8 to run, F5 to build
-au FileType c map <F9> :!gcc -finline-functions -Wall -Wextra -pedantic -O2 -lm -lpthread -o %:r<CR>
-au FileType cpp map <F9> :!g++ -std=c++11 -finline-functions -Wall -Wextra -pedantic -O2 -lm -lpthread -o %:r<CR>
+au FileType c map <F9> :!gcc -finline-functions -Werror -Wextra -pedantic -O2 -lm -lpthread -o %:r<CR>
+au FileType cpp map <F9> :!g++ -std=c++11 -finline-functions -Werror -Wextra -pedantic -O2 -lm -lpthread -o %:r<CR>
 au FileType c,cpp map <F8> :!./%:r<CR>
 au FileType c,cpp map <F5> :w<CR> :make<CR>
 
@@ -94,10 +93,11 @@ map <S-H> gT
 map <S-L> gt
 
 
+set cscopequickfix=s-,c-,d-,i-,t-,e-
 
 if has("cscope")
     set cscopetag
-    set csto=0
+set csto=0
     if filereadable("cscope.out")
         cs add cscope.out  
     elseif $CSCOPE_DB != ""
@@ -105,9 +105,10 @@ if has("cscope")
     endif
     set cscopeverbose  
 endif
-
-
-autocmd Filetype c :set equalprg=indent
-if has("autocmd")
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif 
+if has("syntax")
+        "set foldmethod=syntax
+else
+        "set foldmethod=indent
 endif
+
+let g:Powerline_symbols = 'fancy'

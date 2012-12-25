@@ -18,7 +18,7 @@ from ranger.api.options import *
 
 # Load the deault rc.conf file?  If you've copied it to your configuration
 # direcory, then you should deactivate this option.
-load_default_rc = True
+load_default_rc = False
 
 # How many columns are there, and what are their relative widths?
 column_ratios = (1, 3, 4)
@@ -38,7 +38,7 @@ preview_script = '~/.config/ranger/scope.sh'
 use_preview_script = True
 
 # Use a unicode "..." character to mark cut-off filenames?
-unicode_ellipsis = False
+unicode_ellipsis = True
 
 # Show dotfiles in the bookmark preview box?
 show_hidden_bookmarks = True
@@ -62,7 +62,7 @@ draw_borders = True
 draw_bookmark_borders = True
 
 # Display the directory name in tabs?
-dirname_in_tabs = False
+dirname_in_tabs = True
 
 # Enable the mouse support?
 mouse_enabled = False
@@ -111,7 +111,7 @@ autosave_bookmarks = True
 autoupdate_cumulative_size = False
 
 # Makes sense for screen readers:
-show_cursor = False
+show_cursor = True
 
 # One of: size, basename, mtime, type
 sort = 'natural'
@@ -143,16 +143,16 @@ colorscheme_overlay = None
 ## Note: Here, the colors/attributes aren't directly imported into
 ## the namespace but have to be accessed with color.xyz.
 
-#from ranger.gui import color
-#def colorscheme_overlay(context, fg, bg, attr):
-#	if context.directory and attr & color.bold and \
-#			not any((context.marked, context.selected)):
-#		attr ^= color.bold  # I don't like bold directories!
-#
-#	if context.main_column and context.selected:
-#		fg, bg = color.red, color.default  # To highlight the main column!
-#
-#	return fg, bg, attr
+from ranger.gui import color
+def colorscheme_overlay(context, fg, bg, attr):
+	if context.directory and attr & color.bold and \
+			not any((context.marked, context.selected)):
+		attr ^= color.bold  # I don't like bold directories!
+
+	if context.main_column and context.selected:
+		fg, bg = color.red, color.default  # To highlight the main column!
+
+	return fg, bg, attr
 
 
 # ===================================================================

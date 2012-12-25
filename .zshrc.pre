@@ -145,3 +145,19 @@ alias bsim='java -jar bsim.jar -Xms8m -Xmx32m -reporterrors'
 alias untar='tar -zxf'
 alias unbz2='tar -jxf'
 zstyle ':completion:*' completer _oldlist _complete _match _ignored _approximate
+
+user-ret(){
+    if [[ $BUFFER = "" ]] ;then
+        BUFFER="ls"
+        zle end-of-line
+        zle accept-line
+    elif [[ $BUFFER =~ "^cd\ \.\.\.+$" ]] ;then
+        BUFFER=${${BUFFER//\./\.\.\/}/\.\.\//}
+        zle end-of-line
+        zle accept-line
+    else
+        zle accept-line
+    fi
+}
+zle -N user-ret
+bindkey "\r" user-ret

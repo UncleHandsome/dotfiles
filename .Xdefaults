@@ -2,21 +2,30 @@ urxvt.background:       #000000
 urxvt.foreground:       #EBEBFF
 urxvt*scrollBar:        false
 urxvt*secondaryScroll:  true
-urxvt*font:             xft:inconsolata:pixelsize=15
+urxvt*font:             xft:inconsolata:pixelsize=18:antialias=true:hinting=true,xft:otf-ipafont:pixelsize=17:antialias=true
 urxvt*saveLines:        512
 urxvt*xftAntialias:     true
 urxvt*jumpScroll:       true
+urxvt*cutchars: `"()*<>{}[|]
 urxvt*internalBorder:   0
 urxvt*cursolBlink:      false
 urxvt*termName:         rxvt-256color
-!urxvt*transparent:      true
 urxvt*inheritPixmap: true
 urxvt*tintCddolor: white
-urxvt*shading:          9 
-URxvt.perl-ext-common:  default,clapboard,url-select,keyboard-select,tabbed
+urxvt*shading:          13 
+URxvt.perl-ext-common:  default,clipboard,url-select,keyboard-select,matcher
 URxvt.url-select.launcher: chromium -new-tab
 URxvt.url-select.underline: true
 URxvt.keysym.M-u:       perl:url-select:select_next
 URxvt.keysym.M-Escape:  perl:keyboard-select:activate
 URxvt.keysym.M-s:       perl:keyboard-select:search
-URxvt.multichar_encoding:big5
+urxvt*matcher.button:   1
+URxvt.keysym.M-Escape:perl:keyboard-select:activate
+URxvt.keysym.M-c:     perl:clipboard:copy
+URxvt.keysym.M-v:     perl:clipboard:paste
+URxvt.keysym.M-C-v:   perl:clipboard:paste_escaped
+urxvt*modifier:       alt
+URxvt.tabbed.tabbar-fg: 2
+URxvt.tabbed.tabbar-bg: 0
+URxvt.tabbed.tab-fg:    3
+URxvt.tabbed.tab-bg:    0

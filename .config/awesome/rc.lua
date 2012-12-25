@@ -7,6 +7,7 @@ require("beautiful")
 require("eminent")
 -- Notification library
 require("naughty")
+require("revelation")
 local vicious = require("vicious")
 
 
@@ -57,7 +58,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
+beautiful.init("/usr/share/awesome/themes/rbown/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -91,13 +92,17 @@ layouts =
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
+tags = {
+    names = {"☯", "☥", "♎", "♨"}
+}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
     --tags[s] = awful.tag({ 1, 2, 3 }, s, layouts[4])
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5 }, s, awful.layout.suit.tile)
+    --tags[s] = awful.tag({ 1, 2, 3, 4, 5 }, s, awful.layout.suit.tile)
+    tags[s] = awful.tag(tags.names, s, awful.layout.suit.tile)
 end
 -- }}}
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -324,6 +329,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    awful.key({ modkey,           }, "e", revelation),
+    awful.key({ modkey,           }, "a", function () mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible end),
 
     awful.key({ modkey,           }, "j",
         function ()
