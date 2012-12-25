@@ -4,6 +4,7 @@ require("awful.autofocus")
 require("awful.rules")
 -- Theme handling library
 require("beautiful")
+require("eminent")
 -- Notification library
 require("naughty")
 local vicious = require("vicious")
@@ -93,8 +94,8 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
-    --tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, awful.layout.suit.tile)
+    --tags[s] = awful.tag({ 1, 2, 3 }, s, layouts[4])
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5 }, s, awful.layout.suit.tile)
 end
 -- }}}
 
@@ -126,41 +127,55 @@ mysystray = widget({ type = "systray" })
 --Memory widget
 memwidget = widget({ type = "textbox" })
 vicious.cache(vicious.widgets.mem)
-vicious.register(memwidget, vicious.widgets.mem, '($2MB/$3MB) (<span color="#00EE00">$1%</span>)', 13)
+vicious.register(memwidget, vicious.widgets.mem, '($2MB/$3MB)(<span color="#00EE00">$1%</span>)', 10)
+
+membar = awful.widget.progressbar()
+
+membar:set_width(8)
+membar:set_height(10)
+membar:set_vertical(true)
+membar:set_background_color("#1793D1")
+membar:set_border_color(nil)
+membar:set_color("#1793D1")
+membar:set_gradient_colors({ "#AECF96", "#88A175", "#FF5656" })
+
+vicious.register(membar, vicious.widgets.mem, "$1", 1)
+
+
 
 -- CPU temp widget
 tempwidget = widget({ type = "textbox" })
     vicious.register(tempwidget, vicious.widgets.thermal,
     function (widget, args)
         if  args[1] >= 65 and args[1] < 75 then
-            return "" .. colyel .. "" .. coldef .. colbyel .. args[1] .. "°C " .. coldef .. ""
+            return "" .. colyel .. "" .. coldef .. colbyel .. args[1] .. "°C" .. coldef .. ""
         elseif args[1] >= 75 and args[1] < 80 then
-            return "" .. colred .. "" .. coldef .. colbred .. args[1] .. "°C " .. coldef .. ""
+            return "" .. colred .. "" .. coldef .. colbred .. args[1] .. "°C" .. coldef .. ""
         elseif args[1] > 80 then
             naughty.notify({ title = "Temperature Warning", text = "Running hot! " .. args[1] .. "°C!\nTake it easy.", timeout = 10, position = "top_right", fg = beautiful.fg_urgent, bg = beautiful.bg_urgent })
-            return "" .. colred .. "" .. coldef .. colbred .. args[1] .. "°C " .. coldef .. "" 
+            return "" .. colred .. "" .. coldef .. colbred .. args[1] .. "°C" .. coldef .. "" 
         else
-            return "" .. colwhi .. "" .. coldef .. colbwhi .. args[1] .. "°C " .. coldef .. ""
+            return "" .. colwhi .. "" .. coldef .. colbwhi .. args[1] .. "°C" .. coldef .. ""
         end
-    end, 19, "thermal_zone0" )
+    end, 10, "thermal_zone0" )
 
 --baticon.image = image(beautiful.widget_bat)
 batwidget = widget({ type = "textbox" })
     vicious.register(batwidget, vicious.widgets.bat,
     function (widget, args)
-        if args[2] >= 50 and args[2] < 75 then
-            return "" .. colyel .. "" .. coldef .. colbyel .. args[2] .. "% " .. "(" .. args[3] .. ") " .. coldef .. ""
-        elseif args[2] >= 20 and args[2] < 50 then
-            return "" .. colred .. "" .. coldef .. colbred .. args[2] .. "% " .. "(" .. args[3] .. ") " .. coldef .. ""
-        elseif args[2] < 20 and args[1] == "-" then
+        if args[2] >= 25 and args[2] < 50 then
+            return "" .. colyel .. "" .. coldef .. colbyel .. args[1] ..args[2] .. "%" .. "(" .. args[3] .. ")" .. coldef .. ""
+        elseif args[2] >= 10 and args[2] < 25 then
+            return "" .. colred .. "" .. coldef .. colbred .. args[1] ..args[2] .. "%" .. "(" .. args[3] .. ")" .. coldef .. ""
+        elseif args[2] < 10 and args[1] == "-" then
             naughty.notify({ title = "Battery Warning", text = "Battery low! "..args[2].."% left!\nBetter get some power.", timeout = 10, position = "top_right", fg = beautiful.fg_urgent, bg = beautiful.bg_urgent })
-            return "" .. colred .. "" .. coldef .. colbred .. args[2] .. "% " .. "(" .. args[3] .. ") " .. coldef .. ""
-        elseif args[2] < 20 then 
-            return "" .. colred .. "" .. coldef .. colbred .. args[2] .. "% " .. "(" .. args[3] .. ") " .. coldef .. ""
+            return "" .. colred .. "" .. coldef .. colbred .. args[1] .. args[2] .. "%" .. "(" .. args[3] .. ")" .. coldef .. ""
+        elseif args[2] < 10 then 
+            return "" .. colred .. "" .. coldef .. colbred .. args[1] .. args[2] .. "%" .. "(" .. args[3] .. ")" .. coldef .. ""
         else
-            return "" .. colwhi .. "" .. coldef .. colbwhi .. args[2] .. "% " .. "(" .. args[3] .. ") " .. coldef .. ""
+            return "" .. colwhi .. "" .. coldef .. colbwhi .. args[1] .. args[2] .. "%" .. "(" .. args[3] .. ")" .. coldef .. ""
         end
-    end, 23, "BAT0"    )
+    end, 20, "BAT0"    )
 
   
   
@@ -183,22 +198,22 @@ volwidget = widget({ type = "textbox" })
             if args[1] == 0 or args[2] == "♩" then
                 return "" .. colwhi .. "" .. coldef .. colbred .. "mute" .. coldef .. "" 
             else
-                return "" .. colwhi .. "" .. coldef .. colbwhi .. args[1] .. "% " .. coldef .. ""
+                return "" .. colwhi .. "" .. coldef .. colbwhi .. args[1] .. "%" .. coldef .. ""
             end
-        end, 2, "Master" )
+        end, 1, "Master" )
     volwidget:buttons(
         awful.util.table.join(
             awful.button({ }, 1, function () awful.util.spawn("amixer -q sset Master toggle")   end),
             awful.button({ }, 3, function () awful.util.spawn( terminal .. " -e alsamixer")   end),
-            awful.button({ }, 4, function () awful.util.spawn("amixer -q sset Master 2%+") end),
-            awful.button({ }, 5, function () awful.util.spawn("amixer -q sset Master 2%-") end)
+            awful.button({ }, 4, function () awful.util.spawn("amixer -q sset Master 3%+") end),
+            awful.button({ }, 5, function () awful.util.spawn("amixer -q sset Master 3%-") end)
         )
     )
 
 
 -- widget separator
 separator = widget({ type = "textbox" })
-separator.text  = " | "
+separator.text  = "|"
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -276,19 +291,19 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-	separator,
+        separator,
         memwidget,
-	separator,
+	    separator,
         cpuwidget.widget,
-	separator,
+	    separator,
 --	uptimewidget,
 --	separator,
         batwidget,
-	separator,
+	    separator,
         volwidget,
-	separator,
-	tempwidget,
-	separator,
+	    separator,
+	    tempwidget,
+	    separator,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -355,23 +370,22 @@ globalkeys = awful.util.table.join(
     
     -- Programs
     -- launchers
-    --awful.key({ modkey,           }, "w",                     function () mainmenu:show({keygrabber=true}) end),
---    awful.key({ modkey,           }, "p",                     function () awful.util.spawn("dmenu_run -b -fn 'terminus' -nb '#1a1a1a' -nf '#9bcd32' -sb '#4c4b49' -sf '#9bcd32'") end),
-    --awful.key({ modkey,           }, "Tab",                   function () awful.util.spawn(terminal) end),
-    --awful.key({ modkey, "Shift"   }, "Tab",                   function () awful.util.spawn(terminal .. " -e su") end),
-    -- miscellaneous
-    --awful.key({ modkey, "Shift"   }, "x",                     function () awful.util.spawn("xkill") end),
-    awful.key({ "Mod1", "Control"   }, "Delete",                     function () awful.util.spawn(terminal .. " -e xscreensaver-command --lock") end),
-    --awful.key({ modkey, "Control", "Shift" }, "r",            rodentbane.start),         
+    awful.key({ "Mod1", "Control"   }, "Delete",                function () awful.util.spawn("xscreensaver-command --lock") end),
+    awful.key({                     }, "XF86Calculator",        function () awful.util.spawn("gcalctool") end),
     -- volume + mpd
-    awful.key({                   }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer -q sset Master 2%-") end),
-    awful.key({                   }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer -q sset Master 2%+") end),
+    awful.key({                   }, "XF86AudioLowerVolume",  function () awful.util.spawn("amixer -q sset Master 3%-") end),
+    awful.key({                   }, "XF86AudioRaiseVolume",  function () awful.util.spawn("amixer -q sset Master 3%+") end),
+    awful.key({                   }, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 3") end),
+    awful.key({                   }, "XF86MonBrightnessUp",   function () awful.util.spawn("xbacklight -inc 3") end),
     awful.key({                   }, "XF86AudioStop",         function () awful.util.spawn("mpc stop") end),
     awful.key({                   }, "XF86AudioPlay",         function () awful.util.spawn("mpc toggle") end),
     awful.key({                   }, "XF86AudioNext",         function () awful.util.spawn("mpc next") end),
     awful.key({                   }, "XF86AudioPrev",         function () awful.util.spawn("mpc prev") end),
     awful.key({                   }, "XF86AudioMute",         function () awful.util.spawn("amixer -q set Master toggle") end),
-    awful.key({ modkey,           }, "m",                     function () awful.util.spawn(terminal .. " -e ncmpcpp") end),
+    awful.key({ modkey,           }, "g",                     function () awful.util.spawn(terminal .. " -e ranger") end), 
+    awful.key({ modkey,           }, "b",                     function () awful.util.spawn("chromium") end), 
+    awful.key({ "Shift",          }, "Print",                 function () awful.util.spawn("import  sora screenshot.jpg") end),
+    --awful.key({ modkey,           }, "m",                     function () awful.util.spawn(terminal .. " -e ncmpcpp") end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
