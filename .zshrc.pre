@@ -60,11 +60,11 @@ setprompt () {
     PR_SET_CHARSET="%{$terminfo[enacs]%}"
     PR_SHIFT_IN="%{$terminfo[smacs]%}"
     PR_SHIFT_OUT="%{$terminfo[rmacs]%}"
-    #PR_HBAR=${altchar[q]:--}
-    #PR_ULCORNER=${altchar[l]:-┌}
-    #PR_LLCORNER=${altchar[m]:--}
-    #PR_LRCORNER=${altchar[j]:--}
-    #PR_URCORNER=${altchar[k]:--}
+    PR_HBAR=${altchar[q]:--}
+    PR_ULCORNER=${altchar[l]:-┌}
+    PR_LLCORNER=${altchar[m]:--}
+    PR_LRCORNER=${altchar[j]:--}
+    PR_URCORNER=${altchar[k]:--}
 
     
     ###
@@ -130,20 +130,26 @@ setprompt
 #    alias egrep='egrep --color=auto'
 #fi
 
-alias tel='luit -encoding big5 telnet'
-alias big5='luit -encoding big5'
-alias bs2='luit -encoding big5 telnet bs2.to'
-alias ptt='luit -encoding big5 telnet ptt.cc'
+#alias tel='luit -encoding big5 telnet'
+#alias big5='luit -encoding big5'
+#alias bs2='luit -encoding big5 telnet bs2.to'
+#alias ptt='luit -encoding big5 telnet ptt.cc'
 alias untar='tar zxvf'
 alias atm='tmux attach'
+alias uncle="140.113.242.67"
 alias mach='ssh sora@140.113.242.67'
 alias emacs='emacs -nw'
-alias winejp='LANG=ja_JP.EUC-JP wine'
+alias jp='LANG=ja_JP.EUC-JP'
 alias iso='mount -o loop -t iso9660'
 alias jsim='java -jar jsim.jar -Xms8m -Xmx32m -reporterrors'
 alias bsim='java -jar bsim.jar -Xms8m -Xmx32m -reporterrors'
 alias untar='tar -zxf'
 alias unbz2='tar -jxf'
+alias tunnel='ssh -NfD 9567 sora@140.113.242.67 -p 9527'
+alias dtrx='dtrx -qq'
+alias javaws='/usr/lib/jvm/java-6-openjdk/bin/javaws'
+alias topcoder='/usr/lib/jvm/java-6-openjdk/bin/javaws ~/Documents/topcoder/ContestAppletProd.jnlp'
+alias dstat='dstat -cdlmnpsy'
 zstyle ':completion:*' completer _oldlist _complete _match _ignored _approximate
 
 user-ret(){
@@ -161,3 +167,6 @@ user-ret(){
 }
 zle -N user-ret
 bindkey "\r" user-ret
+#autoload -Uz promptinit
+#promptinit
+#prompt adam2 8bit

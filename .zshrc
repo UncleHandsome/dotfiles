@@ -108,8 +108,6 @@ if [[ $ZSH_PROFILE_RC -gt 0 ]] ; then
     zmodload zsh/zprof
 fi
 
-# load .zshrc.pre to give the user the chance to overwrite the defaults
-[[ -r ${HOME}/.zshrc.pre ]] && source ${HOME}/.zshrc.pre
 
 # check for version/system
 # check for versions (compatibility reasons)
@@ -528,7 +526,7 @@ else
 fi
 
 #v#
-export PAGER=${PAGER:-most}
+export PAGER=${PAGER:-less}
 
 #v#
 export MAIL=${MAIL:-/var/mail/$USER}
@@ -974,9 +972,6 @@ zrcautoload history-search-end
 # fi
 alias url-quote='autoload -U url-quote-magic ; zle -N self-insert url-quote-magic'
 
-
-alias tunnel='ssh -NfD 5566 sora@140.113.242.67'
-
 #m# k ESC-h Call \kbd{run-help} for the 1st word on the command line
 alias run-help >&/dev/null && unalias run-help
 for rh in run-help{,-git,-svk,-svn}; do
@@ -1228,7 +1223,7 @@ if zrcautoload colors && colors 2>/dev/null ; then
     MAGENTA="%{${fg[magenta]}%}"
     YELLOW="%{${fg[yellow]}%}"
     WHITE="%{${fg[white]}%}"
-    NO_COLOUR="%{${reset_color}%}"
+    NO_COLOR="%{${reset_color}%}"
 else
     BLUE=$'%{\e[1;34m%}'
     RED=$'%{\e[1;31m%}'
@@ -1237,13 +1232,12 @@ else
     WHITE=$'%{\e[1;37m%}'
     MAGENTA=$'%{\e[1;35m%}'
     YELLOW=$'%{\e[1;33m%}'
-    NO_COLOUR=$'%{\e[0m%}'
+    NO_COLOR=$'%{\e[0m%}'
 fi
 
 # gather version control information for inclusion in a prompt
 
 if zrcautoload vcs_info; then
-    return 1
     # `vcs_info' in zsh versions 4.3.10 and below have a broken `_realpath'
     # function, which can cause a lot of trouble with our directory-based
     # profiles. So:
@@ -1262,7 +1256,7 @@ if zrcautoload vcs_info; then
 fi
 
 # Change vcs_info formats for the grml prompt. The 2nd format sets up
-# $vcs_info_msg_1_ to contain "zsh: repo-name" used to set our screen title.
+# $vcs_info_msg_1_ to contain "zsh: repo-name" used to set our /screen title.
 # TODO: The included vcs_info() version still uses $VCS_INFO_message_N_.
 #       That needs to be the use of $VCS_INFO_message_N_ needs to be changed
 #       to $vcs_info_msg_N_ as soon as we use the included version.
@@ -1270,10 +1264,10 @@ if [[ "$TERM" == dumb ]] ; then
     zstyle ':vcs_info:*' actionformats "(%s%)-[%b|%a] " "zsh: %r"
     zstyle ':vcs_info:*' formats       "(%s%)-[%b] "    "zsh: %r"
 else
-    # these are the same, just with a lot of colours:
-    zstyle ':vcs_info:*' actionformats "${MAGENTA}(${NO_COLOUR}%s${MAGENTA})${YELLOW}-${MAGENTA}[${GREEN}%b${YELLOW}|${RED}%a${MAGENTA}]${NO_COLOUR} " \
+    # these are the same, just with a lot of colors:
+    zstyle ':vcs_info:*' actionformats "${MAGENTA}(${NO_COLOR}%s${MAGENTA})${YELLOW}-${MAGENTA}[${GREEN}%b${YELLOW}|${RED}%a${MAGENTA}]${NO_COLOR} " \
                                        "zsh: %r"
-    zstyle ':vcs_info:*' formats       "${MAGENTA}(${NO_COLOUR}%s${MAGENTA})${YELLOW}-${MAGENTA}[${GREEN}%b${MAGENTA}]${NO_COLOUR}%} " \
+    zstyle ':vcs_info:*' formats       "${MAGENTA}(${NO_COLOR}%s${MAGENTA})${YELLOW}-${MAGENTA}[${GREEN}%b${MAGENTA}]${NO_COLOR}%} " \
                                        "zsh: %r"
     zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat "%b${RED}:${YELLOW}%r"
 fi
@@ -1352,6 +1346,7 @@ is4 && [[ $NOPRECMD -eq 0 ]] && precmd () {
             ;;
     esac
 }
+
 # preexec() => a function running before every command
 is4 && [[ $NOPRECMD -eq 0 ]] && \
 preexec () {
@@ -1398,13 +1393,14 @@ else
     # prompt set variable identifying the chroot you work in (used in the
     # prompt below)
     if [[ $GRMLPROMPT -gt 0 ]] ; then
-        PROMPT="${RED}${EXITCODE}${CYAN}[%j running job(s)] ${GREEN}{history#%!} ${RED}%(3L.+.) ${BLUE}%* %D${BLUE}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "
+        PROMPT="${RED}${EXITCODE}${CYAN}[%j running job(s)] ${GREEN}{history#%!} ${RED}%(3L.+.) ${BLUE}%* %D
+${BLUE}%n${NO_COLOR}@%m %40<...<%B%~%b%<< "
     else
         # This assembles the primary prompt string
         if (( EUID != 0 )); then
-            PROMPT="${RED}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${BLUE}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "
+            PROMPT="${RED}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${BLUE}%n${NO_COLOR}@%m %40<...<%B%~%b%<< "
         else
-            PROMPT="${BLUE}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${RED}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "
+            PROMPT="${BLUE}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${RED}%n${NO_COLOR}@%m %40<...<%B%~%b%<< "
         fi
     fi
 fi
@@ -1572,48 +1568,6 @@ $bg[white]$fg[black]
 Please report wishes + bugs to the grml-team: http://grml.org/bugs/
 Enjoy your grml system with the zsh!$reset_color"
 }
-
-# debian stuff
-if [[ -r /etc/debian_version ]] ; then
-    #a3# Execute \kbd{apt-cache search}
-    alias acs='apt-cache search'
-    #a3# Execute \kbd{apt-cache show}
-    alias acsh='apt-cache show'
-    #a3# Execute \kbd{apt-cache policy}
-    alias acp='apt-cache policy'
-    #a3# Execute \kbd{apt-get dist-upgrade}
-    salias adg="apt-get dist-upgrade"
-    #a3# Execute \kbd{apt-get install}
-    salias agi="apt-get install"
-    #a3# Execute \kbd{aptitude install}
-    salias ati="aptitude install"
-    #a3# Execute \kbd{apt-get upgrade}
-    salias ag="apt-get upgrade"
-    #a3# Execute \kbd{apt-get update}
-    salias au="apt-get update"
-    #a3# Execute \kbd{aptitude update ; aptitude safe-upgrade}
-    salias -a up="aptitude update ; aptitude safe-upgrade"
-    #a3# Execute \kbd{dpkg-buildpackage}
-    alias dbp='dpkg-buildpackage'
-    #a3# Execute \kbd{grep-excuses}
-    alias ge='grep-excuses'
-
-    # get a root shell as normal user in live-cd mode:
-    if isgrmlcd && [[ $UID -ne 0 ]] ; then
-       alias su="sudo su"
-     fi
-
-    #a1# Take a look at the syslog: \kbd{\$PAGER /var/log/syslog}
-    salias llog="$PAGER /var/log/syslog"     # take a look at the syslog
-    #a1# Take a look at the syslog: \kbd{tail -f /var/log/syslog}
-    salias tlog="tail -f /var/log/syslog"    # follow the syslog
-fi
-
-# sort installed Debian-packages by size
-if check_com -c dpkg-query ; then
-    #a3# List installed Debian-packages sorted by size
-    alias debs-by-size="dpkg-query -Wf 'x \${Installed-Size} \${Package} \${Status}\n' | sed -ne '/^x  /d' -e '/^x \(.*\) install ok installed$/s//\1/p' | sort -nr"
-fi
 
 # if cdrecord is a symlink (to wodim) or isn't present at all warn:
 if [[ -L /usr/bin/cdrecord ]] || ! check_com -c cdrecord; then
@@ -2446,7 +2400,7 @@ trans() {
 # Usage: simple-extract <file>
 # Using option -d deletes the original archive file.
 #f5# Smart archive extractor
-simple-extract() {
+et() {
     emulate -L zsh
     setopt extended_glob noclobber
     local DELETE_ORIGINAL DECOMP_CMD USES_STDIN USES_STDOUT GZTARGET WGET_CMD
@@ -2455,22 +2409,22 @@ simple-extract() {
     for ARCHIVE in "${@}"; do
         case $ARCHIVE in
             *(tar.bz2|tbz2|tbz))
-                DECOMP_CMD="tar -xvjf -"
+                DECOMP_CMD="tar -xjf -"
                 USES_STDIN=true
                 USES_STDOUT=false
                 ;;
             *(tar.gz|tgz))
-                DECOMP_CMD="tar -xvzf -"
+                DECOMP_CMD="tar -xzf -"
                 USES_STDIN=true
                 USES_STDOUT=false
                 ;;
             *(tar.xz|txz|tar.lzma))
-                DECOMP_CMD="tar -xvJf -"
+                DECOMP_CMD="tar -xJf -"
                 USES_STDIN=true
                 USES_STDOUT=false
                 ;;
             *tar)
-                DECOMP_CMD="tar -xvf -"
+                DECOMP_CMD="tar -xf -"
                 USES_STDIN=true
                 USES_STDOUT=false
                 ;;
@@ -2634,12 +2588,15 @@ xtrename() {
 # API reference: https://code.google.com/apis/urlshortener/
 function zurl() {
     emulate -L zsh
+    setopt extended_glob
+
     if [[ -z $1 ]]; then
         print "USAGE: zurl <URL>"
         return 1
     fi
 
-    local PN url prog api json data
+    local PN url prog api json contenttype item
+    local -a data
     PN=$0
     url=$1
 
@@ -2657,11 +2614,19 @@ function zurl() {
     api='https://www.googleapis.com/urlshortener/v1/url'
     contenttype="Content-Type: application/json"
     json="{\"longUrl\": \"${url}\"}"
-    data=$($prog --silent -H ${contenttype} -d ${json} $api)
-    # Match against a regex and print it
-    if [[ $data =~ '"id": "(http://goo.gl/[[:alnum:]]+)"' ]]; then
-        print $match;
-    fi
+    data=(${(f)"$($prog --silent -H ${contenttype} -d ${json} $api)"})
+    # Parse the response
+    for item in "${data[@]}"; do
+        case "$item" in
+            ' '#'"id":'*)
+                item=${item#*: \"}
+                item=${item%\",*}
+                printf '%s\n' "$item"
+                return 0
+                ;;
+        esac
+    done
+    return 1
 }
 
 #f2# Find history events by search pattern and list them by date.
@@ -2777,3 +2742,6 @@ zrclocal
 # Local variables:
 # mode: sh
 # End:
+# load .zshrc.pre to give the user the chance to overwrite the defaults
+[[ -r ${HOME}/.zshrc.pre ]] && source ${HOME}/.zshrc.pre
+

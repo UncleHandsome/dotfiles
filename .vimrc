@@ -1,3 +1,5 @@
+colorscheme slate
+
 set cul
 set nu
 set bg=dark
@@ -35,7 +37,7 @@ set tm=500
 
 "coloer and fonts
 syn on
-set encoding=utf8
+set encoding=utf-8
 set ffs=unix,dos,mac
 
 "files
@@ -52,7 +54,9 @@ set lbr
 set tw=500
 set ai
 set si
-"set wrap
+set formatoptions+=mB
+set wrap
+set ws
 
 
 "line status
@@ -61,6 +65,7 @@ set statusline=\ %{HasPaste()}%<%-15.25(%f%)%m%r%h\ %w\ \
 set statusline+=\ \ \ [%{&ff}/%Y] 
 set statusline+=\ \ \ %<%20.30(%{hostname()}:%{CurDir()}%)\ 
 set statusline+=%=%-10.(%l,%c%V%)\ %p%%/%L
+set laststatus=2
 
 function! CurDir()
     let curdir = substitute(getcwd(), $HOME, "~", "")
@@ -84,6 +89,7 @@ au FileType c map <F9> :!gcc -finline-functions -Werror -Wextra -pedantic -O2 -l
 au FileType cpp map <F9> :!g++ -std=c++11 -finline-functions -Werror -Wextra -pedantic -O2 -lm -lpthread -o %:r<CR>
 au FileType c,cpp map <F8> :!./%:r<CR>
 au FileType c,cpp map <F5> :w<CR> :make<CR>
+set pt=<f7>
 
 " move around tabs. conflict with the original screen top/bottom
 " comment them out if you want the original H/L
@@ -111,4 +117,6 @@ else
         "set foldmethod=indent
 endif
 
-let g:Powerline_symbols = 'fancy'
+let g:Powerline_symbols = 'unicode'
+let g:Powerline_colorscheme = 'solarized256'
+let g:Powerline_stl_path_style = 'short'
