@@ -2,7 +2,8 @@ urxvt.background:       #000000
 urxvt.foreground:       #EBEBFF
 urxvt*scrollBar:        false
 urxvt*secondaryScroll:  true
-urxvt*font:             xft:inconsolata:pixelsize=21:antialias=true:hinting=true,xft:otf-ipafont:pixelsize=17:antialias=true:hinting=true
+#urxvt*font:             xft:inconsolata:pixelsize=21:antialias=true:hinting=true,xft:otf-ipafont:pixelsize=17:antialias=true:hinting=true
+urxvt*font:             xft:inconsolata:pixelsize=20,xft:otf-ipafont:pixelsize=17
 urxvt*saveLines:        512
 urxvt*xftAntialias:     true
 urxvt*jumpScroll:       true

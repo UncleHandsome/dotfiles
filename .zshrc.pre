@@ -150,6 +150,8 @@ alias dtrx='dtrx -qq'
 alias javaws='/usr/lib/jvm/java-6-openjdk/bin/javaws'
 alias topcoder='/usr/lib/jvm/java-6-openjdk/bin/javaws ~/Documents/topcoder/ContestAppletProd.jnlp'
 alias dstat='dstat -cdlmnpsy'
+alias sy='sudo pacman -Syu'
+alias ss='sudo pacman -Ss'
 zstyle ':completion:*' completer _oldlist _complete _match _ignored _approximate
 
 user-ret(){
